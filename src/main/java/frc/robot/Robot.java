@@ -5,7 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -18,10 +20,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
+  private static final int buttonOpen = 0;
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   private final RomiDrivetrain m_drivetrain = new RomiDrivetrain();
+  private final Servo servo1 = new Servo(2);
+  //private final RomiWeapons m_weapons = new Romi
+
 
   // This line creates a new controller object, which we can use to get inputs from said controller/joystick.
   private GenericHID controller = new GenericHID(0);
@@ -36,7 +42,14 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
   }
-
+  public void openServo()
+  {
+    servo1.set(1); 
+  }
+  public void closeServo()
+  {
+    servo1.set(0); 
+  }
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
    * that you want ran during disabled, autonomous, teleoperated and test.
@@ -96,6 +109,11 @@ public class Robot extends TimedRobot {
     double turnSpeed = -controller.getRawAxis(0);
 
     m_drivetrain.arcadeDrive(forwardSpeed, turnSpeed);
+
+
+    // Servo controls
+    controller.getRawButton(buttonOpen);
+    //m_
   }
 
   /** This function is called once when the robot is disabled. */
